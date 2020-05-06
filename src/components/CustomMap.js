@@ -4,40 +4,31 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import { Map, TileLayer, Marker, Polyline } from 'react-leaflet'
 
-
-const tailUrl = "http://mt.google.com/vt/lyrs=m&x={x}&y={y}&z={z}";
+const tailUrl = "https://{s}.tile.osm.org/{z}/{x}/{y}.png ";
 
 export default class CustomMap extends Component {
   constructor(props) {
 
     super(props)
 
-    this.zoom = 14
     this.state = {
+      zoom : 20,
       positions: props.positions,
       currentIndex: 0,
       currentPosition: props.positions[0],
-      overridePolyline : []
+      overridePolyline: []
     }
 
     this.lines = [];
     this.markers = [];
     this.trackMarker = [];
 
+    console.log(this.state.currentPosition)
+
     // this.PlayContinuedPolyline = this.PlayContinuedPolyline.bind(this);
 
   }
 
-  // PlayContinuedPolyline() {
-  //   let positionsOverride = []
-  //   for (let i = 0; i < this.state.positions.length - 1; i++) {
-  //     const polyline = <Polyline key={"line-" + i} positions={[this.state.positions[i], this.state.positions[(i + 1)]]} color={"green"}></Polyline>;
-        
-  //     setTimeout(function(){ positionsOverride.push(polyline); this.setState({overridePolyline: positionsOverride});
-
-  //     }.bind(this), 1000);
-  //   }
-  // }
 
   GenerateContinuedPolylines() {
     for (let i = 0; i < this.state.positions.length - 1; i++) {
@@ -48,7 +39,7 @@ export default class CustomMap extends Component {
 
   GenerateMarkers() {
     for (let i = 0; i < this.state.positions.length - 1; i++) {
-      this.lines.push(<Marker key={"marker-" + i} position={this.state.positions[i]}></Marker>);
+      this.markers.push(<Marker key={"marker-" + i} position={this.state.positions[i]}></Marker>);
     }
   }
 
@@ -59,28 +50,24 @@ export default class CustomMap extends Component {
   render() {
 
     this.GenerateContinuedPolylines();
-    // this.GenerateMarkers();
+    //  this.GenerateMarkers();
     this.AddTrackingMarker();
-
-    // this.PlayContinuedPolyline();
 
     return (
       <div>
-        <Map center={this.state.currentPosition} zoom={this.zoom}  >
+        <Map center={this.state.currentPosition} zoom={this.state.zoom}  >
           <TileLayer url={tailUrl} />
 
           {this.lines}
 
-          {/* {this.state.overridePolyline} */}
+          {this.trackMarker}
 
           {this.markers}
 
-          {this.trackMarker}
+          {/* <Marker key="current" position={this.state.currentPosition}></Marker> */}
 
         </Map>
         <div>
-          {/* <Button variant="success" onClick={() => this.PlayContinuedPolyline()}>Reproducir</Button>
-          <Button variant="danger">Detener</Button> */}
           <Button variant="default">Atras</Button>
           <Button variant="primary" onClick={() => { this.setState({ currentIndex: this.state.currentIndex + 1, currentPosition: this.state.positions[this.state.currentIndex + 1] }) }}>Adelante</Button>
         </div>
