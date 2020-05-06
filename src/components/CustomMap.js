@@ -12,7 +12,7 @@ export default class CustomMap extends Component {
     super(props)
 
     this.state = {
-      zoom : 20,
+      zoom: 15,
       positions: props.positions,
       currentIndex: 0,
       currentPosition: props.positions[0],
@@ -69,7 +69,10 @@ export default class CustomMap extends Component {
         </Map>
         <div>
           <Button variant="default">Atras</Button>
-          <Button variant="primary" onClick={() => { this.setState({ currentIndex: this.state.currentIndex + 1, currentPosition: this.state.positions[this.state.currentIndex + 1] }) }}>Adelante</Button>
+          <Button variant="primary" onClick={() => {
+            if (this.state.currentIndex < this.state.positions.length - 1)
+              this.setState({ currentIndex: this.state.currentIndex + 1, currentPosition: this.state.positions[this.state.currentIndex + 1] })
+          }}>Adelante</Button>
         </div>
       </div>
     )
