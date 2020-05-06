@@ -68,7 +68,10 @@ export default class CustomMap extends Component {
 
         </Map>
         <div>
-          <Button variant="default">Atras</Button>
+          <Button variant="danger" onClick={() => {
+            if (this.state.currentIndex > 0)
+              this.setState({ currentIndex: this.state.currentIndex - 1, currentPosition: this.state.positions[this.state.currentIndex - 1] })
+          }}>Atras</Button>
           <Button variant="primary" onClick={() => {
             if (this.state.currentIndex < this.state.positions.length - 1)
               this.setState({ currentIndex: this.state.currentIndex + 1, currentPosition: this.state.positions[this.state.currentIndex + 1] })
