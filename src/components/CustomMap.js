@@ -2,7 +2,8 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
-import { Map, TileLayer, Marker, Polyline } from 'react-leaflet'
+import { Map, TileLayer, Marker, Polyline ,ZoomControl} from 'react-leaflet'
+import src from '*.bmp';
 
 const tailUrl = "https://{s}.tile.osm.org/{z}/{x}/{y}.png ";
 
@@ -12,8 +13,9 @@ export default class CustomMap extends Component {
     super(props)
 
     this.state = {
-      zoom: 15,
+      zoom: 17,
       positions: props.positions,
+      otherPositions: props.otherPositions,
       currentIndex: 0,
       currentPosition: props.positions[0],
       overridePolyline: []
@@ -23,16 +25,17 @@ export default class CustomMap extends Component {
     this.markers = [];
     this.trackMarker = [];
 
-    console.log(this.state.currentPosition)
-
-    // this.PlayContinuedPolyline = this.PlayContinuedPolyline.bind(this);
-
   }
 
 
   GenerateContinuedPolylines() {
     for (let i = 0; i < this.state.positions.length - 1; i++) {
       const polyline = <Polyline key={"line-" + i} positions={[this.state.positions[i], this.state.positions[(i + 1)]]} color={"red"}></Polyline>;
+      this.lines.push(polyline);
+    }
+
+    for (let i = 0; i < this.state.otherPositions.length - 1; i++) {
+      const polyline = <Polyline key={"line-" + i} positions={[this.state.otherPositions[i], this.state.otherPositions[(i + 1)]]} color={"blue"}></Polyline>;
       this.lines.push(polyline);
     }
   }
@@ -50,12 +53,12 @@ export default class CustomMap extends Component {
   render() {
 
     this.GenerateContinuedPolylines();
-    //  this.GenerateMarkers();
+    //this.GenerateMarkers();
     this.AddTrackingMarker();
 
     return (
       <div>
-        <Map center={this.state.currentPosition} zoom={this.state.zoom}  >
+        <Map center={this.state.currentPosition} zoom={this.state.zoom} zoomControl={false} >
           <TileLayer url={tailUrl} />
 
           {this.lines}
@@ -65,7 +68,7 @@ export default class CustomMap extends Component {
           {this.markers}
 
           {/* <Marker key="current" position={this.state.currentPosition}></Marker> */}
-
+          <ZoomControl position="topright" />
         </Map>
         <div>
           <Button variant="danger" onClick={() => {
