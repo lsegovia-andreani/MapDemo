@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import { Map, TileLayer, Marker, Polyline ,ZoomControl} from 'react-leaflet'
-import src from '*.bmp';
 
 const tailUrl = "https://{s}.tile.osm.org/{z}/{x}/{y}.png ";
 
@@ -44,6 +43,10 @@ export default class CustomMap extends Component {
     for (let i = 0; i < this.state.positions.length - 1; i++) {
       this.markers.push(<Marker key={"marker-" + i} position={this.state.positions[i]}></Marker>);
     }
+
+    for (let i = 0; i < this.state.otherPositions.length - 1; i++) {
+      this.markers.push(<Marker key={"marker-" + i} position={this.state.otherPositions[i]}></Marker>);
+    }
   }
 
   AddTrackingMarker() {
@@ -53,7 +56,7 @@ export default class CustomMap extends Component {
   render() {
 
     this.GenerateContinuedPolylines();
-    //this.GenerateMarkers();
+    this.GenerateMarkers();
     this.AddTrackingMarker();
 
     return (
